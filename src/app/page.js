@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [ applications, setApplications ] = useState([]);
+  const [ company, setCompany ] = useState('');
+  const [ role, setRole ] = useState('');
+  const [ jobUrl, setJobUrl ] = useState('');
+  const [ status, setStatus ] = useState('saved');
+  const [ notes, setNotes ] = useState('');
   const [ loading, setLoading ] = useState(true);
   const [ error, setError ] = useState('');
 
@@ -26,6 +31,43 @@ export default function Home() {
     }
   }
 
+  async function createApplication(e) {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const res = await fetch('/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          company, 
+          role,
+          jobUrl,
+          status,
+          notes,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to create application');
+      }
+
+      setApplications((prev) => [data.application, ...prev]);
+
+      setCompany('');
+      setRole('');
+      setJobUrl('');
+      setStatus('saved');
+      setNotes('');
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   useEffect(() => {
     loadApplications();
   }, []);
@@ -33,6 +75,46 @@ export default function Home() {
   return (
     <main>
       <h1>Job Tracker</h1>
+      <p>Track job applications, statuses, notes, and interviews.</p>
+
+      <form onSubmit={createApplication} style={{ display: 'grid', gap: 12, marginTop: 24 }}>
+        <input
+          placeholder='Company'
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
+
+        <input
+          placeholder='Role'
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+        />
+
+        <input
+          placeholder='Job URL'
+          value={jobUrl}
+          onChange={(e) => setJobUrl(e.target.value)}
+        />
+
+        <select value={status} onChange={(e) => setStatus(e.target.value)}>
+          <option value='saved'>Saved</option>
+          <option value='applied'>Applied</option>
+          <option value='interviewing'>Interviewing</option>
+          <option value='rejected'>Rejected</option>
+          <option value='offer'>Offer</option>
+        </select>
+
+        <textarea
+          placeholder='Notes'
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+        />
+
+        <button type='submit' disabled={!company.trim() || !role.trim()}>
+          Add Application
+        </button>
+      </form>
+
 
       {error && (
         <p style={{ color: '#f87171' }}>
