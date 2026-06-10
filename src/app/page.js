@@ -193,6 +193,10 @@ export default function Home() {
                 {app.notes && (
                   <p>{app.notes}</p>
                 )}
+
+                <button 
+                  onClick={() => deleteApplication(app._id)}
+                  style={{ marginTop: 12 }}>Delete</button>
                 </div>
           ))}
           </div>
