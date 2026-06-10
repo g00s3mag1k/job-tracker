@@ -6,7 +6,9 @@ export async function DELETE(req, { params }) {
     try {
         await connectDB();
 
-        const deletedApplication = await Application.findByIdAndDelete(params.id);
+        const { id } = await params;
+
+        const deletedApplication = await Application.findByIdAndDelete(id);
 
         if (!deletedApplication) {
             return NextResponse.json(

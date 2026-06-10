@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { DELETE } from "./api/applications/[id]/route";
 
 export default function Home() {
   const [ applications, setApplications ] = useState([]);
@@ -92,7 +91,6 @@ export default function Home() {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadApplications();
   }, []);
 
