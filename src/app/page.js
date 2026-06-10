@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { DELETE } from "./api/applications/[id]/route";
 
 export default function Home() {
   const [ applications, setApplications ] = useState([]);
@@ -14,6 +15,7 @@ export default function Home() {
 
   async function loadApplications() {
     try {
+      setError('');
       setLoading(true); 
 
       const res = await fetch('/api/applications');
@@ -68,7 +70,29 @@ export default function Home() {
     }
   }
 
+  async function deleteApplication(id) {
+    setError('');
+    
+    try {
+      const res = await fetch(`/api/applications/${id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to delete application');
+      }
+
+      setApplications((prev) => prev.filter((app) => app._id !== id));
+    
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadApplications();
   }, []);
 
