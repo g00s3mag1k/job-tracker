@@ -90,6 +90,34 @@ export default function Home() {
     }
   }
 
+  async function updateApplicationStatus(id, nextStatus) {
+    setError('');
+
+    try {
+      const res = await fetch(`/api/applications/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: nextStatus }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to update application');
+      }
+
+      setApplications((prev) => 
+        prev.map((app) =>
+          app._id === id ? data.application : app
+        )
+      );
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   useEffect(() => {
     loadApplications();
   }, []);
