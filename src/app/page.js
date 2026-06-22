@@ -122,6 +122,45 @@ export default function Home() {
     loadApplications();
   }, []);
 
+  function getStatusLabel(status) {
+    const labels = {
+      saved: 'Saved',
+      applied: 'Applied',
+      interviewing: 'Interviewing',
+      rejected: 'Rejected',
+      offer: 'Offer',
+    };
+
+    return labels[status] || status;
+  }
+
+  function getStatusStyle(status) {
+    const styles = {
+      saved: {
+        background: '#334155',
+        color: '#e2e8f0'
+      },
+      applied: {
+        background: '#1d4ed8',
+        color: '#dbeafe',
+      },
+      interviewing: {
+        background: '#854d0e',
+        color: '#fef3c7',
+      },
+      rejected: {
+        background: '#7f1d1d',
+        color: '#fee2e2',
+      },
+      offer: {
+        background: '#14532d',
+        color: '#dcfce7',
+      },
+    };
+
+    return styles[status] || styles.saved;
+  }
+
   return (
     <main>
       <h1>Job Tracker</h1>
@@ -200,8 +239,18 @@ export default function Home() {
                   <strong>Role:</strong> {app.role}
                 </p>
 
-                <label>
-                  <strong>Status:</strong> {' '}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span
+                    style={{...getStatusStyle(app.status),
+                      padding: '4px 10px',
+                      borderRadius: 999,
+                      fontSize: 13,
+                      fontWeight: 700,
+                    }}
+                  >
+                    {getStatusLabel(app.status)}
+                  </span>
+                  
                   <select
                     value={app.status}
                     onChange={(e) => updateApplicationStatus(app._id, e.target.value)}
@@ -212,7 +261,11 @@ export default function Home() {
                       <option value='rejected'>Rejected</option>
                       <option value='offer'>Offer</option>
                     </select>
-                </label>
+                </div>
+
+                <p style={{ opacity: 0.75, fontSize: 14 }}>
+                  Added: {new Date(app.createdAt).toLocaleDateString()}
+                </p>
 
                 {app.jobUrl && (
                   <p>
