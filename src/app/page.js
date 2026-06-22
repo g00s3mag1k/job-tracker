@@ -200,9 +200,19 @@ export default function Home() {
                   <strong>Role:</strong> {app.role}
                 </p>
 
-                <p>
-                  <strong>Status:</strong> {app.status}
-                </p>
+                <label>
+                  <strong>Status:</strong> {' '}
+                  <select
+                    value={app.status}
+                    onChange={(e) => updateApplicationStatus(app._id, e.target.value)}
+                    >
+                      <option value='saved'>Saved</option>
+                      <option value='applied'>Applied</option>
+                      <option value='interviewing'>Interviewing</option>
+                      <option value='rejected'>Rejected</option>
+                      <option value='offer'>Offer</option>
+                    </select>
+                </label>
 
                 {app.jobUrl && (
                   <p>
