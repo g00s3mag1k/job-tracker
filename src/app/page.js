@@ -9,6 +9,7 @@ export default function Home() {
   const [ jobUrl, setJobUrl ] = useState('');
   const [ status, setStatus ] = useState('saved');
   const [ notes, setNotes ] = useState('');
+  const [ search, setSearch] = useState('');
   const [ loading, setLoading ] = useState(true);
   const [ error, setError ] = useState('');
 
@@ -161,6 +162,15 @@ export default function Home() {
     return styles[status] || styles.saved;
   }
 
+  const filteredApplication = applications.filter((app) => {
+    const searchTerm = search.toLowerCase();
+
+    return (
+      app.company.toLowerCase().includes(searchTerm) ||
+      app.role.toLowerCase().includes(searchTerm)
+    );
+  });
+
   return (
     <main>
       <h1>Job Tracker</h1>
@@ -204,7 +214,17 @@ export default function Home() {
         </button>
       </form>
 
-
+      <input
+        type='text'
+        placeholder='Search by company or role...'
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{
+          marginTop: 20,
+          padding: 10,
+          width: '100%',
+        }}
+      />
       {error && (
         <p style={{ color: '#f87171' }}>
           {error}
@@ -213,7 +233,7 @@ export default function Home() {
 
       {loading ? (
         <p>Loading...</p>
-      ) : applications.length === 0 ? (
+      ) : filteredApplication.length === 0 ? (
         <p>No applications yet.</p>
       ) : (
         <div
@@ -223,7 +243,7 @@ export default function Home() {
             marginTop: 20,
           }}
         >
-          {applications.map((app) => (
+          {filteredApplication.map((app) => (
             <div 
               key={app._id}
               style={{
