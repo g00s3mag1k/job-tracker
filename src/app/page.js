@@ -10,6 +10,7 @@ export default function Home() {
   const [ status, setStatus ] = useState('saved');
   const [ notes, setNotes ] = useState('');
   const [ search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [ loading, setLoading ] = useState(true);
   const [ error, setError ] = useState('');
 
@@ -165,10 +166,14 @@ export default function Home() {
   const filteredApplication = applications.filter((app) => {
     const searchTerm = search.toLowerCase();
 
-    return (
+    const matchesSearch =
       app.company.toLowerCase().includes(searchTerm) ||
-      app.role.toLowerCase().includes(searchTerm)
-    );
+      app.role.toLowerCase().includes(searchTerm);
+    
+    const matchesStatus = 
+      statusFilter === 'all' || app.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
   });
 
   return (
@@ -225,6 +230,23 @@ export default function Home() {
           width: '100%',
         }}
       />
+
+      <select
+        value={statusFilter}
+        onChange={(e) => setStatusFilter(e.target.value)}
+        style={{
+          marginTop: 12,
+          padding: 10,
+          width: '100%',
+        }}
+      >
+        <option value='all'>All statuses</option>
+        <option value='saved'>Saved</option>
+        <option value='applied'>Applied</option>
+        <option value='interviewing'>Interviewing</option>
+        <option value='rejected'>Rejected</option>
+        <option value='offer'>Offer</option>
+      </select>
       {error && (
         <p style={{ color: '#f87171' }}>
           {error}
