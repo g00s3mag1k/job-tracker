@@ -176,6 +176,17 @@ export default function Home() {
     return matchesSearch && matchesStatus;
   });
 
+  const totalApplications = applications.length;
+  const appliedCount = applications.filter(
+    (app) => app.status === 'applied'
+  ).length;
+  const interviewCount = applications.filter(
+    (app) => app.status === 'interviewing'
+  ).length;
+  const offerCount = applications.filter(
+    (app) => app.status === 'offer'
+  ).length;
+
   return (
     <main>
       <h1>Job Tracker</h1>
