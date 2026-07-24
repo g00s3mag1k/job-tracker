@@ -190,6 +190,35 @@ export default function Home() {
   return (
     <main>
       <h1>Job Tracker</h1>
+      <div 
+        style={{
+          display: 'grid',
+          gridTemplateColumns:'repeat(4, 1fr',
+          gap: 16,
+          marginTop: 20,
+          marginBottom: 30,
+      }}
+      >
+        <div style={cardStyle}>
+          <h2>{totalApplications}</h2>
+          <p>Total</p>
+        </div>
+
+        <div style={cardStyle}>
+          <h2>{appliedCount}</h2>
+          <p>Applied</p>
+        </div>
+
+        <div style={cardStyle}>
+          <h2>{interviewCount}</h2>
+          <p>Interviewing</p>
+        </div>
+
+        <div style={cardStyle}>
+          <h2>{offerCount}</h2>
+          <p>Offers</p>
+        </div>
+      </div>
       <p>Track job applications, statuses, notes, and interviews.</p>
 
       <form onSubmit={createApplication} style={{ display: 'grid', gap: 12, marginTop: 24 }}>
