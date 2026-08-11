@@ -187,6 +187,14 @@ export default function Home() {
     (app) => app.status === 'offer'
   ).length;
 
+  const cardStyle = {
+    background: '#111827',
+    border: '1px solid #334155',
+    borderRadius: 12,
+    padding: 20,
+    textAlign: 'center',
+  }
+
   return (
     <main>
       <h1>Job Tracker</h1>
@@ -219,6 +227,7 @@ export default function Home() {
           <p>Offers</p>
         </div>
       </div>
+
       <p>Track job applications, statuses, notes, and interviews.</p>
 
       <form onSubmit={createApplication} style={{ display: 'grid', gap: 12, marginTop: 24 }}>
