@@ -10,6 +10,7 @@ export default function Home() {
   const [ status, setStatus ] = useState('saved');
   const [ notes, setNotes ] = useState('');
   const [ search, setSearch] = useState('');
+  const [ sortOrder, setSortOrder] = useState('newest');
   const [statusFilter, setStatusFilter] = useState('all');
   const [ loading, setLoading ] = useState(true);
   const [ error, setError ] = useState('');
@@ -174,6 +175,13 @@ export default function Home() {
       statusFilter === 'all' || app.status === statusFilter;
 
     return matchesSearch && matchesStatus;
+  })
+  .sort((a,b) => {
+    if (sortOrder === 'newest') {
+      return new Data(b.createdAt) - new Date (a.createdAt);
+    }
+
+    return new Date(a.createdAt) - new Date (b.createdAt);
   });
 
   const totalApplications = applications.length;
@@ -281,6 +289,19 @@ export default function Home() {
       />
 
       <select
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+        style={{
+          marginTop: 12,
+          padding: 10,
+          width: '100%',
+        }}
+        >
+          <option value='newest'> Newest first</option>
+          <option value='oldest'> Oldest first</option>
+      </select>
+
+      <select
         value={statusFilter}
         onChange={(e) => setStatusFilter(e.target.value)}
         style={{
@@ -289,6 +310,7 @@ export default function Home() {
           width: '100%',
         }}
       >
+
         <option value='all'>All statuses</option>
         <option value='saved'>Saved</option>
         <option value='applied'>Applied</option>
