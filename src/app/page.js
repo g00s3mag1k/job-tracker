@@ -10,6 +10,7 @@ export default function Home() {
   const [ status, setStatus ] = useState('saved');
   const [ notes, setNotes ] = useState('');
   const [ search, setSearch] = useState('');
+  const [ sortOrder, setSortOrder] = useState('newest');
   const [statusFilter, setStatusFilter] = useState('all');
   const [ loading, setLoading ] = useState(true);
   const [ error, setError ] = useState('');
@@ -174,25 +175,67 @@ export default function Home() {
       statusFilter === 'all' || app.status === statusFilter;
 
     return matchesSearch && matchesStatus;
+  })
+  .sort((a,b) => {
+    if (sortOrder === 'newest') {
+      return new Data(b.createdAt) - new Date (a.createdAt);
+    }
+
+    return new Date(a.createdAt) - new Date (b.createdAt);
   });
 
   const totalApplications = applications.length;
-  
   const appliedCount = applications.filter(
     (app) => app.status === 'applied'
   ).length;
-
   const interviewCount = applications.filter(
     (app) => app.status === 'interviewing'
   ).length;
-
   const offerCount = applications.filter(
     (app) => app.status === 'offer'
   ).length;
 
+  const cardStyle = {
+    background: '#111827',
+    border: '1px solid #334155',
+    borderRadius: 12,
+    padding: 20,
+    textAlign: 'center',
+  }x
+
   return (
     <main>
       <h1>Job Tracker</h1>
+      <div 
+        style={{
+          display: 'grid',
+          gridTemplateColumns:'repeat(4, 1fr',
+          gap: 16,
+          marginTop: 20,
+          marginBottom: 30,
+      }}
+      >
+        <div style={cardStyle}>
+          <h2>{totalApplications}</h2>
+          <p>Total</p>
+        </div>
+
+        <div style={cardStyle}>
+          <h2>{appliedCount}</h2>
+          <p>Applied</p>
+        </div>
+
+        <div style={cardStyle}>
+          <h2>{interviewCount}</h2>
+          <p>Interviewing</p>
+        </div>
+
+        <div style={cardStyle}>
+          <h2>{offerCount}</h2>
+          <p>Offers</p>
+        </div>
+      </div>
+
       <p>Track job applications, statuses, notes, and interviews.</p>
 
       <form onSubmit={createApplication} style={{ display: 'grid', gap: 12, marginTop: 24 }}>
@@ -246,6 +289,19 @@ export default function Home() {
       />
 
       <select
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.target.value)}
+        style={{
+          marginTop: 12,
+          padding: 10,
+          width: '100%',
+        }}
+        >
+          <option value='newest'> Newest first</option>
+          <option value='oldest'> Oldest first</option>
+      </select>
+
+      <select
         value={statusFilter}
         onChange={(e) => setStatusFilter(e.target.value)}
         style={{
@@ -254,6 +310,7 @@ export default function Home() {
           width: '100%',
         }}
       >
+
         <option value='all'>All statuses</option>
         <option value='saved'>Saved</option>
         <option value='applied'>Applied</option>
