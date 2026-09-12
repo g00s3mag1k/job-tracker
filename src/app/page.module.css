@@ -30,6 +30,37 @@
   padding: 120px 60px;
 }
 
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.statCard {
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stateCard h2 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.statCard p {
+  margin: 6px 0 0;
+  opacity: 0.7;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
 .intro {
   display: flex;
   flex-direction: column;
@@ -138,5 +169,11 @@ a.secondary {
     --button-primary-hover: #ccc;
     --button-secondary-hover: #1a1a1a;
     --button-secondary-border: #1a1a1a;
+  }
+}
+
+@media (max-width: 700px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

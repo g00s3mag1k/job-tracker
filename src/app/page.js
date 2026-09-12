@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import styles from './page.module.css';
 
 export default function Home() {
   const [ applications, setApplications ] = useState([]);
@@ -178,7 +179,7 @@ export default function Home() {
   })
   .sort((a,b) => {
     if (sortOrder === 'newest') {
-      return new Data(b.createdAt) - new Date (a.createdAt);
+      return new Date(b.createdAt) - new Date (a.createdAt);
     }
 
     return new Date(a.createdAt) - new Date (b.createdAt);
@@ -195,42 +196,34 @@ export default function Home() {
     (app) => app.status === 'offer'
   ).length;
 
-  const cardStyle = {
-    background: '#111827',
-    border: '1px solid #334155',
-    borderRadius: 12,
-    padding: 20,
-    textAlign: 'center',
-  }x
+  // const cardStyle = {
+  //   background: '#111827',
+  //   border: '1px solid #334155',
+  //   borderRadius: 12,
+  //   padding: 20,
+  //   textAlign: 'center',
+  // }
 
   return (
-    <main>
+    <main className={styles.container}>
       <h1>Job Tracker</h1>
-      <div 
-        style={{
-          display: 'grid',
-          gridTemplateColumns:'repeat(4, 1fr',
-          gap: 16,
-          marginTop: 20,
-          marginBottom: 30,
-      }}
-      >
-        <div style={cardStyle}>
+      <div className={styles.statsGrid}>
+        <div className={styles.statCard}>
           <h2>{totalApplications}</h2>
           <p>Total</p>
         </div>
 
-        <div style={cardStyle}>
+        <div className={styles.statCard}>
           <h2>{appliedCount}</h2>
           <p>Applied</p>
         </div>
 
-        <div style={cardStyle}>
+        <div className={styles.statCard}>
           <h2>{interviewCount}</h2>
           <p>Interviewing</p>
         </div>
 
-        <div style={cardStyle}>
+        <div className={styles.statCard}>
           <h2>{offerCount}</h2>
           <p>Offers</p>
         </div>
